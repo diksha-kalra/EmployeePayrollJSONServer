@@ -49,7 +49,7 @@ public class EmployeePayrollRestAssureTest {
 		employeePayrollData = new Gson().fromJson(response.asString(), EmployeePayrollData.class);
 		employeePayrollService.addEmployeePayroll(employeePayrollData, IOService.REST_IO);
 		long entries = employeePayrollService.countEntries(IOService.REST_IO);
-		Assert.assertEquals(6, entries);
+		Assert.assertEquals(5, entries);
 	}
 
 	@Test
@@ -94,6 +94,23 @@ public class EmployeePayrollRestAssureTest {
 		EmployeePayrollService employeePayrollService;
 		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmps));
 		long entries = employeePayrollService.countEntries(IOService.REST_IO);
-		Assert.assertEquals(6, entries);
+		Assert.assertEquals(5, entries);
 	}
+	
+	@Test
+	public void givenEmployeeToDelete_WhenDeleted_ShouldMatch200ResponseAndCount() {
+		EmployeePayrollService employeePayrollService;
+		EmployeePayrollData[] arrayOfEmployees = getEmployeeList();
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
+		EmployeePayrollData employeePayrollData = employeePayrollService.getEmployeePayrollData("Anil");
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		Response response = request.delete("/employees/" + employeePayrollData.id);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+		employeePayrollService.deleteEmployeePayroll(employeePayrollData.name,IOService.REST_IO);
+		long entries = employeePayrollService.countEntries(IOService.REST_IO);
+		Assert.assertEquals(4, entries);
+	}
+
 }

@@ -160,4 +160,12 @@ public class EmployeePayrollService {
 			this.employeePayrollList = employeePayrollDBService.readActiveEmployeeData();
 		return this.employeePayrollList;
 	}
+
+	public void deleteEmployeePayroll(String name, IOService ioService) {
+		if (ioService.equals(IOService.REST_IO)) {
+			EmployeePayrollData employeePayrollData = this.getEmployeePayrollData(name);
+			employeePayrollList.remove(employeePayrollData);
+		}
+	}
+
 }

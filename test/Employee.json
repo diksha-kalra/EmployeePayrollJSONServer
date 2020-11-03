@@ -46,17 +46,6 @@
     },
     {
       "id": 5,
-      "name": "Anil",
-      "salary": 5000000,
-      "startDate": {
-        "year": 2020,
-        "month": 11,
-        "day": 4
-      },
-      "gender": "M"
-    },
-    {
-      "id": 6,
       "name": "Manish",
       "salary": 3000000,
       "startDate": {

@@ -51,7 +51,7 @@ public class EmployeePayrollRestAssureTest {
 		long entries = employeePayrollService.countEntries(IOService.REST_IO);
 		Assert.assertEquals(6, entries);
 	}
-	
+
 	@Test
 	public void givenListOfEmployees_WhenAdded_ShouldMatch201ResponseCode() throws PayrollSystemException {
 		EmployeePayrollService employeePayrollService;
@@ -71,7 +71,7 @@ public class EmployeePayrollRestAssureTest {
 		long entries = employeePayrollService.countEntries(IOService.REST_IO);
 		Assert.assertEquals(5, entries);
 	}
-	
+
 	@Test
 	public void givenNewSalaryForEmployee_WhenUpdated_ShouldMatch200Response() {
 		EmployeePayrollService employeePayrollService;
@@ -86,5 +86,14 @@ public class EmployeePayrollRestAssureTest {
 		Response response = request.put("/employees/" + employeePayrollData.id);
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
+	}
+
+	@Test
+	public void givenEmployeeDataInJSONServer_WhenRetrieved_ShouldMatchTheCount() {
+		EmployeePayrollData[] arrayOfEmps = getEmployeeList();
+		EmployeePayrollService employeePayrollService;
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmps));
+		long entries = employeePayrollService.countEntries(IOService.REST_IO);
+		Assert.assertEquals(6, entries);
 	}
 }

@@ -49,6 +49,26 @@ public class EmployeePayrollRestAssureTest {
 		employeePayrollData = new Gson().fromJson(response.asString(), EmployeePayrollData.class);
 		employeePayrollService.addEmployeePayroll(employeePayrollData, IOService.REST_IO);
 		long entries = employeePayrollService.countEntries(IOService.REST_IO);
-		Assert.assertEquals(3, entries);
+		Assert.assertEquals(6, entries);
+	}
+	
+	@Test
+	public void givenListOfEmployees_WhenAdded_ShouldMatch201ResponseCode() throws PayrollSystemException {
+		EmployeePayrollService employeePayrollService;
+		EmployeePayrollData[] arrayOfEmployees = getEmployeeList();
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
+		EmployeePayrollData[] arrayOfEmpPayrolls = {
+				new EmployeePayrollData(0, "Sunder", 6000000.00, LocalDate.now(), 'M'),
+				new EmployeePayrollData(0, "Mukesh", 4000000.00, LocalDate.now(), 'M'),
+				new EmployeePayrollData(0, "Anil", 5000000.00, LocalDate.now(), 'M') };
+		for (EmployeePayrollData employeePayrollData : arrayOfEmpPayrolls) {
+			Response response = addEmployeeToJsonServer(employeePayrollData);
+			int statusCode = response.getStatusCode();
+			Assert.assertEquals(201, statusCode);
+			employeePayrollData = new Gson().fromJson(response.asString(), EmployeePayrollData.class);
+			employeePayrollService.addEmployeePayroll(employeePayrollData, IOService.REST_IO);
+		}
+		long entries = employeePayrollService.countEntries(IOService.REST_IO);
+		Assert.assertEquals(5, entries);
 	}
 }

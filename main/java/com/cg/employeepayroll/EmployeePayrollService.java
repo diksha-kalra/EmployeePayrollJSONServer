@@ -78,10 +78,12 @@ public class EmployeePayrollService {
 		return this.employeePayrollList;
 	}
 
-	public void updateEmployeeSalary(String name, double salary) {
-		int result = employeePayrollDBService.updateEmployeeData(name, salary);
-		if (result == 0)
-			return;
+	public void updateEmployeeSalary(String name, double salary, IOService ioService) {
+		if (ioService.equals(IOService.DB_IO)) {
+			int result = employeePayrollDBService.updateEmployeeData(name, salary);
+			if (result == 0)
+				return;
+		}
 		EmployeePayrollData employeePayrollData = this.getEmployeePayrollData(name);
 		if (employeePayrollData != null)
 			employeePayrollData.salary = salary;
